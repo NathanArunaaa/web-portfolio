@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@font-face {
+  font-family: Jetbrains;
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/JetBrainsMono-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: Jetbrains-Italic;
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/fonts/JetBrainsMono-Italic.ttf") format("truetype");
+}
+
