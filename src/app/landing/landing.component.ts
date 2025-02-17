@@ -1,18 +1,34 @@
 import { Component, AfterViewInit, OnDestroy, Inject, ViewChild, ElementRef } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
+import { TransitionService } from '../services/transition.service';
 
 @Component({
   selector: 'app-landing',
-  imports: [],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './landing.component.html'
 })
 export class LandingComponent implements AfterViewInit, OnDestroy {
   @ViewChild('typedElement', { static: false }) typedElement!: ElementRef;
   private typed: any;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
+    private transitionService: TransitionService
+  ) {}
+
+  async navigateToHome() {
+    this.transitionService.fadeOut();
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    await this.router.navigate(['/home']);
+
+    this.transitionService.fadeIn();
+  }
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -30,11 +46,14 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
                 portfolioText.classList.remove('opacity-0');
                 portfolioText.classList.add('opacity-100');
               }
-              const portfolioText2 = document.getElementById('portfolioText2');
-              if (portfolioText2) {
-                portfolioText2.classList.remove('opacity-0');
-                portfolioText2.classList.add('opacity-100');
-              }
+
+              setTimeout(() => {
+                const portfolioText2 = document.getElementById('portfolioText2');
+                if (portfolioText2) {
+                  portfolioText2.classList.remove('opacity-0');
+                  portfolioText2.classList.add('opacity-100');
+                }
+              }, 1000);
             }, 300);
           }
         };
